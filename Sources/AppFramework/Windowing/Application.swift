@@ -12,6 +12,7 @@ import Foundation
 
 public protocol ApplicationDelegate : class {
     func applicationWillInitialise()
+    func applicationDidInitialise(_ application: Application)
     func applicationWillUpdate(_ application: Application, frame: UInt64, deltaTime: Double)
     func applicationDidUpdate(_ application: Application, frame: UInt64, deltaTime: Double)
     func applicationDidBeginImGuiFrame(_ application: Application, frame: UInt64, deltaTime: Double)
@@ -21,6 +22,7 @@ public protocol ApplicationDelegate : class {
 
 extension ApplicationDelegate {
     public func applicationWillInitialise() {}
+    public func applicationDidInitialise(_ application: Application) {}
     public func applicationWillUpdate(_ application: Application, frame: UInt64, deltaTime: Double) {}
     public func applicationDidUpdate(_ application: Application, frame: UInt64, deltaTime: Double) {}
     public func applicationDidBeginImGuiFrame(_ application: Application, frame: UInt64, deltaTime: Double) {}
@@ -47,7 +49,6 @@ public class Application {
     
     init(delegate: ApplicationDelegate?, updateables: [FrameUpdateable], inputManager: @autoclosure () -> InputManager, updateScheduler: UpdateScheduler) {
         ImGui.createContext()
-        ImGui.initialisePlatformInterface()
         
         self.inputManager = inputManager()
         self.windows = []
@@ -65,6 +66,10 @@ public class Application {
         }
         
         self.delegate = delegate
+        delegate?.applicationDidInitialise(self)
+        
+        // ImGui.initialisePlatformInterface is called after applicationDidInitialise to give the application a chance to e.g. set its own fonts.
+        ImGui.initialisePlatformInterface()
     }
     
     public func addUpdateable(_ updateable: FrameUpdateable) {
