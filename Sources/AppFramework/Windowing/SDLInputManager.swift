@@ -10,7 +10,7 @@
 
 import CSDL2
 import ImGui
-import CImGui
+import cimgui
 
 let SDLJoyStickMaxValue = Float(32767)
 let JoyStickDeadZone = Float(8000)

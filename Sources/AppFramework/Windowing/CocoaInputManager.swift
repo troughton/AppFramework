@@ -13,7 +13,7 @@ import Carbon
 import SwiftMath
 import Cocoa
 import ImGui
-import CImGui
+import cimgui
 
 public final class CocoaInputManager : InputManagerInternal {
     public var inputState = InputState<RawInputState>()

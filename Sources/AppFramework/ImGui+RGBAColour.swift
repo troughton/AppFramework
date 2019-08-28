@@ -5,7 +5,7 @@
 //  Created by Thomas Roughton on 26/08/19.
 //
 
-import CImGui
+import cimgui
 import ImGui
 import SwiftMath
 
