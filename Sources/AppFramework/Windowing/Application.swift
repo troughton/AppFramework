@@ -49,6 +49,7 @@ public class Application {
     
     init(delegate: ApplicationDelegate?, updateables: [FrameUpdateable], inputManager: @autoclosure () -> InputManager, updateScheduler: UpdateScheduler) {
         ImGui.createContext()
+        FrameGraph.initialise()
         
         self.inputManager = inputManager()
         self.windows = []
