@@ -54,15 +54,10 @@ extension ImGui {
         let (pixels, width, height, bytesPerPixel) = ImGui.getFontTexDataAsAlpha8()
         
         var textureDescriptor = TextureDescriptor(texture2DWithFormat: .r8Unorm, width: width, height: height, mipmapped: false)
-        textureDescriptor.storageMode = .private
-        textureDescriptor.usageHint = [.shaderRead, .blitDestination]
+        textureDescriptor.storageMode = .managed
+        textureDescriptor.usageHint = [.shaderRead]
         let fontTexture = Texture(descriptor: textureDescriptor, flags: .persistent)
-        
-        let stagingBuffer = Buffer(descriptor: BufferDescriptor(length: width * height * bytesPerPixel, storageMode: .managed, cacheMode: .writeCombined, usage: .blitSource))
-        FrameGraph.addBlitCallbackPass(name: "Stage ImGui Font Texture", execute: { blitEncoder in
-            stagingBuffer[stagingBuffer.range].withContents { $0.copyMemory(from: pixels, byteCount: stagingBuffer.length) }
-            blitEncoder.copy(from: stagingBuffer, sourceOffset: 0, sourceBytesPerRow: width * bytesPerPixel, sourceBytesPerImage: stagingBuffer.descriptor.length, sourceSize: Size(width: width, height: height, depth: 1), to: fontTexture, destinationSlice: 0, destinationLevel: 0, destinationOrigin: Origin(x: 0, y: 0, z: 0))
-        })
+        fontTexture.replace(region: Region(x: 0, y: 0, width: width, height: height), mipmapLevel: 0, withBytes: pixels, bytesPerRow: width * bytesPerPixel)
         
         ImGui.setFontTexID(UnsafeMutableRawPointer(bitPattern: UInt(exactly: fontTexture.handle)!))
         

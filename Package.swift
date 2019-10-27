@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/troughton/SwiftFrameGraph", from: "2.6.0"),
+        .package(url: "https://github.com/troughton/SwiftFrameGraph", from: "2.6.5"),
         .package(url: "https://github.com/troughton/SwiftMath", from: "4.0.0"),
         .package(url: "https://github.com/troughton/SwiftImGui", from: "1.7.32"),
     ],
