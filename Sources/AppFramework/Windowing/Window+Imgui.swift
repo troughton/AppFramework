@@ -81,7 +81,7 @@ extension ImGui {
         platformIO.pointee.Platform_CreateWindow = { viewport in
             let viewport = viewport!
             let windowSize = WindowSize(Float(viewport.pointee.Size.x), Float(viewport.pointee.Size.y))
-            let window = Application.sharedApplication.createWindow(title: "", dimensions: windowSize, flags: [.borderless, .hidden])
+            let window = Application.sharedApplication.createWindow(title: "", dimensions: windowSize, flags: [.borderless, .hidden], frameGraph: Application.sharedApplication.windowFrameGraph)
             viewport.pointee.PlatformHandle = Unmanaged<AnyObject>.passRetained(window).toOpaque()
         }
         

@@ -38,6 +38,7 @@ public class Application {
     public internal(set) var windows : [Window]
     public private(set) var updateables : [FrameUpdateable]
     
+    public let windowFrameGraph : FrameGraph
     public var inputManager : InputManager
     public internal(set) var inputLayers : [InputLayer]
     let imguiInputLayer : ImGuiInputLayer
@@ -47,7 +48,7 @@ public class Application {
     
     public weak var delegate : ApplicationDelegate? = nil
     
-    init(delegate: ApplicationDelegate?, updateables: [FrameUpdateable], inputManager: @autoclosure () -> InputManager, updateScheduler: UpdateScheduler) {
+    init(delegate: ApplicationDelegate?, updateables: [FrameUpdateable], inputManager: @autoclosure () -> InputManager, updateScheduler: UpdateScheduler, windowFrameGraph: FrameGraph) {
         ImGui.createContext()
         FrameGraph.initialise()
         
@@ -55,6 +56,7 @@ public class Application {
         self.windows = []
         self.updateables = []
         self.updateScheduler = updateScheduler
+        self.windowFrameGraph = windowFrameGraph
         
         self.imguiInputLayer = ImGuiInputLayer()
         self.inputLayers = [self.imguiInputLayer]
@@ -76,7 +78,7 @@ public class Application {
     public func addUpdateable(_ updateable: FrameUpdateable) {
         self.updateables.append(updateable)
         if let windowDelegate = updateable as? WindowDelegate {
-            let window = self.createWindow(title: windowDelegate.title, dimensions: windowDelegate.desiredSize, flags: .resizable)
+            let window = self.createWindow(title: windowDelegate.title, dimensions: windowDelegate.desiredSize, flags: .resizable, frameGraph: self.windowFrameGraph)
             window.delegate = windowDelegate
             windowDelegate.window = window
             inputLayers.append(contentsOf: windowDelegate.inputLayers)
@@ -166,7 +168,7 @@ public class Application {
         self.timeLastUpdate = currentTime
     }
     
-    public func createWindow(title: String, dimensions: WindowSize, flags: WindowCreationFlags) -> Window {
+    public func createWindow(title: String, dimensions: WindowSize, flags: WindowCreationFlags, frameGraph: FrameGraph) -> Window {
         fatalError("createWindow(title:dimensions:flags:) needs concrete implementation.")
     }
     

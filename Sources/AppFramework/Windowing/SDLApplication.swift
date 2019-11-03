@@ -33,13 +33,13 @@ public class SDLVulkanWindow : SDLWindow {
 
 public class SDLApplication : Application {
     
-    public init(delegate: ApplicationDelegate?, updateables: @autoclosure () -> [FrameUpdateable], updateScheduler: UpdateScheduler) {
+    public init(delegate: ApplicationDelegate?, updateables: @autoclosure () -> [FrameUpdateable], updateScheduler: UpdateScheduler, windowFrameGraph: FrameGraph) {
         delegate?.applicationWillInitialise()
         
         let updateables = updateables()
         precondition(!updateables.isEmpty)
         
-        super.init(delegate: delegate, updateables: updateables, inputManager: SDLInputManager(), updateScheduler: updateScheduler)
+        super.init(delegate: delegate, updateables: updateables, inputManager: SDLInputManager(), updateScheduler: updateScheduler, windowFrameGraph: windowFrameGraph)
     }
     
     deinit {

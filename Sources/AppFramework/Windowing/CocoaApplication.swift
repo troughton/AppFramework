@@ -15,17 +15,17 @@ import ImGui
 
 public class CocoaApplication : Application {
     
-    public init(delegate: ApplicationDelegate?, updateables: @autoclosure () -> [FrameUpdateable], updateScheduler: UpdateScheduler) {
+    public init(delegate: ApplicationDelegate?, updateables: @autoclosure () -> [FrameUpdateable], updateScheduler: UpdateScheduler, windowFrameGraph: FrameGraph) {
         delegate?.applicationWillInitialise()
         
         let updateables = updateables()
         precondition(!updateables.isEmpty)
         
-        super.init(delegate: delegate, updateables: updateables, inputManager: CocoaInputManager(), updateScheduler: updateScheduler)
+        super.init(delegate: delegate, updateables: updateables, inputManager: CocoaInputManager(), updateScheduler: updateScheduler, windowFrameGraph: windowFrameGraph)
     }
     
-    public override func createWindow(title: String, dimensions: WindowSize, flags: WindowCreationFlags) -> Window {
-        let window = CocoaWindow(id: self.nextAvailableWindowId(), title: title, dimensions: dimensions, inputManager: self.inputManager as! CocoaInputManager, flags: flags)
+    public override func createWindow(title: String, dimensions: WindowSize, flags: WindowCreationFlags, frameGraph: FrameGraph) -> Window {
+        let window = CocoaWindow(id: self.nextAvailableWindowId(), title: title, dimensions: dimensions, inputManager: self.inputManager as! CocoaInputManager, flags: flags, frameGraph: frameGraph)
         
         window.mtkView.isPaused = true
         window.mtkView.enableSetNeedsDisplay = true

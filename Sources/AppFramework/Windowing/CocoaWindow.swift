@@ -196,7 +196,7 @@ public class CocoaWindow : NSObject, Window, NSWindowDelegate, MTKWindow {
         }
     }
     
-    public init(id: Int, title: String, dimensions: WindowSize, inputManager: CocoaInputManager, flags: WindowCreationFlags) {
+    public init(id: Int, title: String, dimensions: WindowSize, inputManager: CocoaInputManager, flags: WindowCreationFlags, frameGraph: FrameGraph) {
         self.id = id
         
         self._dimensions = dimensions
@@ -251,7 +251,7 @@ public class CocoaWindow : NSObject, Window, NSWindowDelegate, MTKWindow {
         win.isReleasedWhenClosed = false
         
         self._texture.constructor = { [unowned(unsafe) self] in
-            let texture = Texture(windowId: self.id, descriptor: self.textureDescriptor, isMinimised: false, nativeWindow: self.mtkView)
+            let texture = Texture(windowId: self.id, descriptor: self.textureDescriptor, isMinimised: false, nativeWindow: self.mtkView, frameGraph: frameGraph)
             return texture
         }
     }

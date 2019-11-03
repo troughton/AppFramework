@@ -13,7 +13,6 @@ import UIKit
 import MetalKit
 import ImGui
 
-
 final class CocoaInputManager : InputManagerInternal {
     
     var inputState = InputState<RawInputState>()
@@ -89,7 +88,7 @@ public class CocoaApplication : Application {
     
     let contentScaleFactor : Float
     
-    public init(delegate: AppDelegate?, viewController: UIViewController, windowDelegate: @autoclosure () -> WindowDelegate, updateScheduler: MetalUpdateScheduler) {
+    public init(delegate: AppDelegate?, viewController: UIViewController, windowDelegate: @autoclosure () -> WindowDelegate, updateScheduler: MetalUpdateScheduler, windowFrameGraph: FrameGraph) {
         delegate?.applicationWillInitialise()
         
         let inputManager = CocoaInputManager()
@@ -102,7 +101,7 @@ public class CocoaApplication : Application {
         let windows : [Window] = [window]
         self.contentScaleFactor = Float(viewController.view.contentScaleFactor)
         
-        super.init(updateables: [windowDelegate], windows: windows, inputManager: inputManager, updateScheduler: updateScheduler)
+        super.init(updateables: [windowDelegate], windows: windows, inputManager: inputManager, updateScheduler: updateScheduler, windowFrameGraph: windowFrameGraph)
     }
     
     public override func createWindow(title: String, dimensions: WindowSize, flags: WindowCreationFlags) -> Window {

@@ -7,6 +7,7 @@
 //
 
 import Dispatch
+import SwiftFrameGraph
 
 public protocol UpdateScheduler {
 }
@@ -37,10 +38,10 @@ import MetalKit
 public final class MetalUpdateScheduler : NSObject, UpdateScheduler, MTKViewDelegate  {
     private var application : CocoaApplication! = nil
     
-    public init(appDelegate: ApplicationDelegate?, windowDelegates: @escaping @autoclosure () -> [WindowDelegate]) {
+    public init(appDelegate: ApplicationDelegate?, windowDelegates: @escaping @autoclosure () -> [WindowDelegate], windowFrameGraph: FrameGraph) {
         super.init()
         
-        self.application = CocoaApplication(delegate: appDelegate, updateables: windowDelegates(), updateScheduler: self)
+        self.application = CocoaApplication(delegate: appDelegate, updateables: windowDelegates(), updateScheduler: self, windowFrameGraph: windowFrameGraph)
         
         let mainWindow = application.windows.first! as! MTKWindow
     
@@ -78,10 +79,10 @@ public final class MetalUpdateScheduler : NSObject, UpdateScheduler, MTKViewDele
     private var vsyncUpdate : Bool = false
     private var application : CocoaApplication! = nil
 
-    public init(appDelegate: ApplicationDelegate?, viewController: UIViewController, windowDelegate: @escaping @autoclosure () -> WindowDelegate) {
+    public init(appDelegate: ApplicationDelegate?, viewController: UIViewController, windowDelegate: @escaping @autoclosure () -> WindowDelegate, windowFrameGraph: FrameGraph) {
         super.init()
 
-        self.application = CocoaApplication(delegate: appDelegate, viewController: viewController, windowDelegate: windowDelegate, updateScheduler: self)
+        self.application = CocoaApplication(delegate: appDelegate, viewController: viewController, windowDelegate: windowDelegate, updateScheduler: self, windowFrameGraph: windowFrameGraph)
 
         let mainWindow = windows.first! as! MTKWindow
 
