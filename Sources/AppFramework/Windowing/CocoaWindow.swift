@@ -251,7 +251,7 @@ public class CocoaWindow : NSObject, Window, NSWindowDelegate, MTKWindow {
         win.isReleasedWhenClosed = false
         
         self._texture.constructor = { [unowned(unsafe) self] in
-            let texture = Texture(windowId: self.id, descriptor: self.textureDescriptor, isMinimised: false, nativeWindow: self.mtkView, frameGraph: frameGraph)
+            let texture = Texture(windowId: self.id, descriptor: self.textureDescriptor, isMinimised: false, nativeWindow: self.mtkView.layer, frameGraph: frameGraph)
             return texture
         }
     }
