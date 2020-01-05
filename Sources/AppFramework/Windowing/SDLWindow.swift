@@ -170,10 +170,14 @@ open class SDLWindow : Window {
             var x : Int32 = 0
             var y : Int32 = 0
             SDL_GetWindowPosition(self.sdlWindowPointer, &x, &y)
-            return WindowPosition(Float(x), Float(y))
+            
+            let flippedY = Application.sharedApplication.screens[0].dimensions.height - Float(y) - self.dimensions.height
+            
+            return WindowPosition(Float(x), flippedY)
         }
         set {
-            SDL_SetWindowPosition(self.sdlWindowPointer, Int32(newValue.x), Int32(newValue.y))
+            let flippedY = Application.sharedApplication.screens[0].dimensions.height - newValue.y - self.dimensions.height
+            SDL_SetWindowPosition(self.sdlWindowPointer, Int32(newValue.x), Int32(flippedY))
         }
     }
     
